@@ -11,20 +11,50 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    //点击「Run App」按钮时自动打包签名配置
+    signingConfigs {
+        debug {//debug签名配置
+            keyAlias '123456'//密钥标示
+            keyPassword '123456'//密钥密码
+            storePassword '123456'//签名文件密码
+            storeFile file('/Users/ansen/Documents/myapplication.jks')//签名文件路径 需要修改成自己本地的
+        }
+
+        release{//在这里可以配置release版本签名信息
+
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //不同渠道
+    productFlavors {
+        wandoujia {//豌豆荚市场包
+            //自定义变量  参数1:变量类型  参数2:变量名称  参数3:变量值
+            buildConfigField "String", "FR", "\"wandoujia\""
+        }
+        baidu {//百度市场包
+            buildConfigField "String", "FR", "\"baidu\""
+        }
+        oppo {//oppo市场包
+            buildConfigField "String", "FR", "\"oppo\""
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    compile project(':my-library-module')//依赖本地module
 }
